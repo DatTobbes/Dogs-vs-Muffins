@@ -2,12 +2,12 @@ import requests
 import os
 
 muffin_images=[]
-with open('chihuahua.txt', 'r') as file:
+with open('muffins.txt', 'r') as file:
     for line in file:
         muffin_images.append(line)
 
 count=0
-dir='Images/chihuahua-muffin/train/chihuahua'
+dir='Images/chihuahua-muffin/train/muffins'
 for url in muffin_images[:1000]:
     try:
         count+=1

@@ -15,6 +15,8 @@ class DataLoader:
         directories = [d for d in os.listdir(data_dir)
                    if os.path.isdir(os.path.join(data_dir, d))]
 
+        images = []
+        labels = []
         category = 0
         for d in directories:
             file_names = []
@@ -27,14 +29,15 @@ class DataLoader:
 
             for f in file_names:
                 img = cv2.imread(f)
+                img = img[..., ::-1]
                 imresize = cv2.resize(img, (img_Size_X, img_size_Y))
-                self.images.append(imresize)
-                self.labels.append(category)
-                self.create_rnd_img(imresize, category)
+                images.append(imresize)
+                labels.append(category)
+                #self.create_rnd_img(imresize, category, images, labels)
 
             category += 1
-        print(len(self.labels))
-        return self.images, self.labels
+        print(len(labels))
+        return images, labels
 
     def printImageAndLabelArray(self):
         print(images, labels)
@@ -53,12 +56,12 @@ class DataLoader:
         from sklearn.utils import shuffle
         return shuffle(img_array, label_array, random_state=4)
 
-    def create_rnd_img(self, img, label):
+    def create_rnd_img(self, img, label, images,labels):
         new_img=img
 
         flipt_img=self.augmenttator.rnd_flip(new_img)
-        self.images.append(flipt_img)
-        self.labels.append(label)
+        images.append(flipt_img)
+        labels.append(label)
         #cv2.imshow('flip', flipt_img)
 
         rot_img=self.augmenttator.rnd_rotation(new_img,[0,360])
