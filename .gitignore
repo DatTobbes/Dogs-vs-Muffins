@@ -103,3 +103,5 @@ ENV/
 #Images
 .jpg
 .png
+
+images/
