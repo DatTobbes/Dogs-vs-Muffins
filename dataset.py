@@ -2,14 +2,13 @@ import cv2
 import os
 import numpy as np
 from sklearn.model_selection import train_test_split
-from image_augmentation import Img_Augmentation
 
 class DataLoader:
 
     def __init__(self):
         self.images= []
         self.labels=[]
-        self.augmenttator= Img_Augmentation()
+
 
     def save_as_npz(self, images, labels, filename):
         np.savez_compressed( filename,
@@ -47,7 +46,7 @@ class DataLoader:
         for index in range(len(images)):
             print(len(images))
             img = images[index]
-            flipt_img = np.expand_dims(self.augmenttator.rnd_flip(img), axis=0)
+            flipt_img = np.expand_dims(self.rnd_flip(img), axis=0)
             #gray_scaled_img =  cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
             #img_gray =self.change_color(img)
 
@@ -56,6 +55,28 @@ class DataLoader:
 
 
         return images, labels
+
+    def rnd_flip(self, image):
+        """
+        Flips a Image randomly, 
+        :param image: 
+        :return: 
+        """
+        ind_flip = np.random.randint(-1,2)
+        image = cv2.flip(image, ind_flip)
+        return image
+
+    def rnd_rotation(self, image, range=[0,180]):
+        """
+        Rotates a Image a random degree between -25..+25
+        :param image: Image to rotate
+        :return: 
+        """
+        img = image
+        num_rows, num_cols = img.shape[:2]
+        rotation_matrix = cv2.getRotationMatrix2D((num_cols / 2, num_rows / 2),  np.random.randint(range[0],range[1]), 1)
+        img_rotation = cv2.warpAffine(img, rotation_matrix, (num_cols, num_rows))
+        return img_rotation
 
     def change_color(self, img):
         r = img[:, :, 0]
