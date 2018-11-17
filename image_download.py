@@ -8,10 +8,10 @@ geladen und in einen Ordner gespeichert.
 import requests
 import os
 
-filename = "Your_File.txt"
+FILENAME = "Your_File.txt"
 
 images=[]
-with open(filename, 'r') as file:
+with open(FILENAME, 'r') as file:
     for line in file:
         images.append(line)
 
